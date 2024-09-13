@@ -26,7 +26,7 @@ export const posTodosCtrl = (req, res) => {
 
 //borrar tareas para el usuario
 export const deleteTodosctrl = (req, res) => {
-  const { id } = +req.params.id;
+  const { id } = +req.params;
   const todoIndex = database.todos.findIndex((todo) => todo.id === id);
   if (todoIndex === -1) {
     return res.status(404).json({ message: "Tarea no encontrada" });
@@ -41,7 +41,7 @@ export const deleteTodosctrl = (req, res) => {
 
 //actualizar tareas para el usuario
 export const updateTodosCtrl = (req, res) => {
-  const { id } = +req.params.id;
+  const { id } = +req.params;
   const { title, completed } = req.body;
 
   const todoIndex = database.todos.findIndex((todo) => todo.id === id);
