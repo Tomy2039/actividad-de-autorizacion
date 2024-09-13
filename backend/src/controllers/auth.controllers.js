@@ -57,3 +57,43 @@ export const validateSessionCtrl = (req, res) => {
     user: req.user,
   });
 };
+
+//crear tareas para el usuario
+export const createTask = (req, res) => {
+  const { title, completed } = req.body;
+  const owner = req.user.id;
+  const newTask = {
+    id: database.length + 1,
+    title,
+    completed,
+    owner,
+  };
+  database.push(newTask);
+  return res.json({ message: "Tarea creada exitosamente", todo: newTask });
+}
+
+
+//borrar tareas para el usuario
+export const deleteTask = (req, res) => {
+  const { id } = +req.params.id;
+  const taskId = database.findIndex((task) => task.id === id );
+  if (taskId === -1 || taskId === undefined) {
+    return res.status(404).json({ message: "Tarea no encontrada" });
+  }
+  database.splice(task, 1);
+  return res.json({ message: "Tarea eliminada exitosamente" });
+}
+
+//actualizar tareas para el usuario
+export const updateTask = (req, res) => {
+  const { id } = +req.params.id;
+  const { title, completed } = req.body;
+  const task = database.find((task) => task.id === id);
+  if (!task) {
+    return res.status(404).json({ message: "Tarea no encontrada" });
+  }
+  task.title = title;
+  task.completed = completed;
+  return res.json({ message: "Tarea actualizada exitosamente", todo: task });
+}
+
